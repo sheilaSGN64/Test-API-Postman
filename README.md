@@ -14,4 +14,6 @@ atau jika ingin hasil report HTML maka :
 .
 
 masih di terminal folder yang sama, jalankan perintah ini untuk mengeksekusi test api dengan Newman :
-- newman run Test_Case_02.postman_collection.json -e take_home_test.postman_environment.json 
+- newman run Test_Case_02.postman_collection.json -e take_home_test.postman_environment.json
+
+link Postman Collection and Environtment > https://altimetry-architect-95045384-8914601.postman.co/workspace/KntSelatnK's-Workspace~d61d9b26-6a19-4f5e-8ebf-6d5899fac921/collection/47056930-4324fdc4-25b6-4420-9108-511565dc8d7b?action=share&creator=47056930&active-environment=47056930-cad2ce80-b1f6-4b01-bdde-01f90fcdaca8
