@@ -1,0 +1,922 @@
+{
+	"info": {
+		"_postman_id": "4324fdc4-25b6-4420-9108-511565dc8d7b",
+		"name": "Test Case 02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47056930",
+		"_collection_link": "https://altimetry-architect-95045384-8914601.postman.co/workspace/KntSelatnK's-Workspace~d61d9b26-6a19-4f5e-8ebf-6d5899fac921/collection/47056930-4324fdc4-25b6-4420-9108-511565dc8d7b?action=share&source=collection_link&creator=47056930"
+	},
+	"item": [
+		{
+			"name": "Chaining TC001 > TC005",
+			"item": [
+				{
+					"name": "TC001 - Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody.username.trim());\r",
+									"pm.environment.set(\"password\", requestBody.password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"honglu@example.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC002 - User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"Login success\", function () {\r",
+									"    pm.expect(res.message).to.include(\"logged in user session\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC003 - Search User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"success search user\", function () {\r",
+									"    pm.expect(res.username).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/{{username}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC004 - Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"\r",
+									"pm.test(\"success update data user\", function () {\r",
+									"    pm.expect(res).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"hong Updated\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"sheila.updated@example.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"08123456789\",\r\n  \"userStatus\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{username}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC005 - Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"User deleted successfully\", function () {\r",
+									"    pm.expect(res.message).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/{{username}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{username}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chaining TC006 > TC008",
+			"item": [
+				{
+					"name": "TC006 - Create multiple users with createWithList",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody[0].username.trim());\r",
+									"pm.environment.set(\"password\", requestBody[0].password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"test123@gmail.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 0\r\n},\r\n{\r\n  \"id\": 5,\r\n  \"username\": \"{{username2}}\",\r\n  \"firstName\": \"tester\",\r\n  \"lastName\": \"qaqaqa\",\r\n  \"email\": \"server95@bk.ru\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"3333\",\r\n  \"userStatus\": 5\r\n}\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/createWithList",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"createWithList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC007 - Create multiple users with createWithList using invalid body JSON",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody[0].username.trim());\r",
+									"pm.environment.set(\"password\", requestBody[0].password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"test123@gmail.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 0\r\n},\r\n{\r\n  \"id\": 5,\r\n  \"username\": \"{{username2}}\",\r\n  \"firstName\": \"tester\",\r\n  \"lastName\": \"qaqaqa\",\r\n  \"email\": \"server95@bk.ru\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"3333\",\r\n  \"userStatus\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/createWithList",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"createWithList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC008 - Login with invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"Login success\", function () {\r",
+									"    pm.expect(res.message).to.include(\"logged in user session\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login?username={{username}}&password={{invalidpassword1}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{invalidpassword1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chaining TC009 > TC011",
+			"item": [
+				{
+					"name": "TC009 - Create multiple users with createWithArray",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody[0].username.trim());\r",
+									"pm.environment.set(\"password\", requestBody[0].password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 1,\r\n    \"username\": \"{{username}}\",\r\n    \"firstName\": \"Hong\",\r\n    \"lastName\": \"Lu\",\r\n    \"email\": \"test123@gmail.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 0\r\n  },\r\n  {\r\n    \"id\": 5,\r\n    \"username\": \"{{username2}}\",\r\n    \"firstName\": \"tester\",\r\n    \"lastName\": \"qaqaqa\",\r\n    \"email\": \"server95@bk.ru\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"3333\",\r\n    \"userStatus\": 5\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/createWithArray",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"createWithArray"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC010 - Create User with Duplicate data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody[0].username.trim());\r",
+									"pm.environment.set(\"password\", requestBody[0].password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 1,\r\n    \"username\": \"{{username}}\",\r\n    \"firstName\": \"Hong\",\r\n    \"lastName\": \"Lu\",\r\n    \"email\": \"test123@gmail.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 0\r\n  },\r\n  {\r\n    \"id\": 1,\r\n    \"username\": \"{{username}}\",\r\n    \"firstName\": \"Hong\",\r\n    \"lastName\": \"Lu\",\r\n    \"email\": \"test123@gmail.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"1234567890\",\r\n    \"userStatus\": 0\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/createWithArray",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"createWithArray"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC011 - Create multiple users with createWithList using invalid body JSON",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody[0].username.trim());\r",
+									"pm.environment.set(\"password\", requestBody[0].password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"test123@gmail.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 0\r\n},\r\n{\r\n  \"id\": 5,\r\n  \"username\": \"{{username2}}\",\r\n  \"firstName\": \"tester\",\r\n  \"lastName\": \"qaqaqa\",\r\n  \"email\": \"server95@bk.ru\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"3333\",\r\n  \"userStatus\": 5\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/createWithArray",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"createWithArray"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chaining TC012 > TC015",
+			"item": [
+				{
+					"name": "TC012 - Create User with Empty fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody.username.trim());\r",
+									"pm.environment.set(\"password\", requestBody.password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"\",\r\n  \"email\": \"\",\r\n  \"password\": \"\",\r\n  \"phone\": \"\",\r\n  \"userStatus\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC013 - Create User with invalid Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody.username.trim());\r",
+									"pm.environment.set(\"password\", requestBody.password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"honglu@\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC001 - Create User Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"let requestBody = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.environment.set(\"username\", requestBody.username.trim());\r",
+									"pm.environment.set(\"password\", requestBody.password.trim());\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"success created new user\", function () {\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Hong\",\r\n  \"lastName\": \"Lu\",\r\n  \"email\": \"honglu@example.com\",\r\n  \"password\": \"{{password}}\",\r\n  \"phone\": \"1234567890\",\r\n  \"userStatus\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC002 - User Login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"Login success\", function () {\r",
+									"    pm.expect(res.message).to.include(\"logged in user session\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login?username={{username}}&password={{password}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC014 - Search user with invalid username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"success search user\", function () {\r",
+									"    pm.expect(res.username).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/{{invalidusername}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{invalidusername}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC015 - Delete user with invalid username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const res = pm.response.json();\r",
+									"pm.test(\"User deleted successfully\", function () {\r",
+									"    pm.expect(res.message).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/{{invalidusername}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"{{invalidusername}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
